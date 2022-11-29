@@ -37,6 +37,7 @@ CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
     title varchar(50) UNIQUE NOT NULL,
     description varchar(250) NOT NULL,
+    img_url varchar(450) NOT NULL,
     date_created timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
