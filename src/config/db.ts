@@ -1,7 +1,7 @@
 import { Client as PgClient } from "pg";
 import { Client, types } from "pg";
 
-const port = parseInt(process.env.DATABASE_PORT || "5340");
+const port = parseInt(process.env.DATABASE_PORT || "5432");
 
 const db: PgClient = new Client({
   host: process.env.DATABASE_HOST,
