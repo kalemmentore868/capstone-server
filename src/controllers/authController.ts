@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
     email: user.email,
     first_name: user.first_name,
     last_name: user.last_name,
-    isadmin: user.isadmin,
+    is_admin: user.is_admin,
   };
 
   console.log("payload", payload);
@@ -40,3 +40,5 @@ router.post("/login", async (req, res) => {
   //return token
   return res.json({ token });
 });
+
+export default router;

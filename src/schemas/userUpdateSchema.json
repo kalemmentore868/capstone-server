@@ -12,6 +12,9 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 75
+    },
+    "is_admin": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,

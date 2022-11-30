@@ -51,7 +51,7 @@ function ensureLoggedIn(req: Request, res: Response, next: NextFunction) {
 
 function ensureAdmin(req: Request, res: Response, next: NextFunction) {
   try {
-    if (!res.locals.user || res.locals.user.isadmin === false) {
+    if (!res.locals.user || res.locals.user.is_admin === false) {
       throw new UnauthorizedError();
     }
     return next(); // only way you would come here is if isadmin key is true
@@ -74,9 +74,10 @@ function ensureCorrectUserOrAdmin(
   try {
     const user = res.locals.user;
 
-    if (!(user && (user.isadmin || user.id === parseInt(req.params.id)))) {
+    if (!(user && (user.is_admin || user.id === parseInt(req.params.id)))) {
       throw new UnauthorizedError();
     }
+
     return next();
   } catch (err) {
     return next(err);

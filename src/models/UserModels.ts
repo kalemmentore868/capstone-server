@@ -121,7 +121,7 @@ class UserModel {
         SET first_name =$1,
         last_name=$2
         WHERE id=$3
-        RETURNING id,first_name,last_name,email,isadmin;`,
+        RETURNING id,first_name,last_name,email,is_admin;`,
       [user_form.first_name, user_form.last_name, id]
     );
     return results.rows[0];

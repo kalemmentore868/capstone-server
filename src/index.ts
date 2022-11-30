@@ -5,7 +5,9 @@ dotenv.config();
 
 import categoryController from "./controllers/categoryController";
 import userController from "./controllers/userController";
+import authController from "./controllers/authController";
 import { ExpressError, NotFoundError } from "./helpers/expressError";
+import { authenticateJWT } from "./middleware/auth";
 
 const app = express();
 
@@ -13,8 +15,11 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use("/api/categories", categoryController);
+app.use(authenticateJWT);
+
+app.use("/api/auth", authController);
 app.use("/api/users", userController);
+app.use("/api/categories", categoryController);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   throw new NotFoundError();

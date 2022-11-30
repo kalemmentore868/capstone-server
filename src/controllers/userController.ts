@@ -110,8 +110,10 @@ router.patch(
 
       if (!validator.valid) {
         const errs = cleanUpErrorMesssages(validator.errors);
+        console.log("problem");
         throw new BadRequestError(errs);
       }
+      console.log("problem here");
       const userData = {
         first_name: req.body.first_name
           ? req.body.first_name
@@ -121,6 +123,7 @@ router.patch(
           : fetchedUser.last_name,
       };
 
+      console.log(userData);
       const user = await UserModel.updateUser(userData, id);
 
       res.json({
