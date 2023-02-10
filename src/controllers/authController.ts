@@ -1,14 +1,15 @@
-import express from "express";
-import AuthModel from "../models/AuthModel";
+import { Request, Response } from "express";
+import UserModel from "../models/UserModel";
 import { BadRequestError } from "../helpers/expressError";
 import cleanUpErrorMesssages from "../helpers/jsonSchemaHelper";
 import jsonschema from "jsonschema";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import userAuthSchema from "../schemas/userAuth.json";
+import userRegisterSchema from "../schemas/userRegister.json";
+import adminRegisterSchema from "../schemas/adminRegister.json";
 
-const router = express.Router();
-
-router.post("/login", async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   //validate
   const validator = jsonschema.validate(req.body, userAuthSchema);
 
@@ -21,24 +22,119 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   //authenticate
-  const user = await AuthModel.authenticate(email, password);
+  const user = await UserModel.findOne({ email });
 
-  //creates my payload
-  let payload = {
-    id: user.id,
-    email: user.email,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    is_admin: user.is_admin,
-  };
+  if (!user) {
+    res.json({ message: "Username or password is incorrect" });
+  } else {
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.json({ message: "Username or password is incorrect" });
+    } else {
+      const SECRET_KEY = process.env.SECRET_KEY || "dog";
+      const token = jwt.sign(
+        {
+          _id: user._id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          is_admin: user.is_admin,
+        },
+        SECRET_KEY
+      );
+      res.json({
+        message: "login successful",
+        data: {
+          _id: user._id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          is_admin: user.is_admin,
+          token,
+        },
+      });
+    }
+  }
+};
 
-  console.log("payload", payload);
-  //creates  token
-  const secretKey = process.env.SECRET_KEY || "dog";
-  const token = jwt.sign(payload, secretKey);
+export const signup = async (req: Request, res: Response) => {
+  const userData = req.body;
 
-  //return token
-  return res.json({ token });
-});
+  const validator = jsonschema.validate(req.body, userRegisterSchema);
 
-export default router;
+  if (!validator.valid) {
+    const errs = cleanUpErrorMesssages(validator.errors);
+
+    throw new BadRequestError(errs);
+  }
+
+  const foundUser = await UserModel.findOne({ email: userData.email });
+
+  if (foundUser) {
+    throw new BadRequestError(
+      `Sorry the email ${req.body.email} already exists`
+    );
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(userData.password, salt);
+  userData.password = hashPassword;
+
+  const user = new UserModel(userData); // create
+  await user.save();
+
+  const SECRET_KEY = process.env.SECRET_KEY || "dog";
+  const token = jwt.sign(
+    {
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      is_admin: user.is_admin,
+    },
+    SECRET_KEY
+  );
+
+  res.status(201).json({
+    message: "A User was created!",
+    data: {
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      is_admin: user.is_admin,
+      token,
+    },
+  });
+};
+
+const adminSignup = async (req: Request, res: Response) => {
+  const userData = req.body;
+
+  const validator = jsonschema.validate(req.body, adminRegisterSchema);
+
+  if (!validator.valid) {
+    const errs = cleanUpErrorMesssages(validator.errors);
+    throw new BadRequestError(errs);
+  }
+
+  const foundUser = await UserModel.findOne({ email: userData.email });
+
+  if (foundUser) {
+    throw new BadRequestError(
+      `Sorry the email ${req.body.email} already exists`
+    );
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(userData.password, salt);
+  userData.password = hashPassword;
+
+  const user = new UserModel(userData); // create
+  await user.save();
+
+  console.log("User", user);
+  res.status(201).json({
+    message: "An Admin User was created!",
+    data: user,
+  });
+};

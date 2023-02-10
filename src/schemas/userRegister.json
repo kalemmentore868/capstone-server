@@ -20,6 +20,10 @@
       "type": "string",
       "minLength": 5,
       "maxLength": 20
+    },
+    "is_admin": {
+      "type": "boolean",
+      "default": false
     }
   },
   "additionalProperties": false,

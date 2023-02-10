@@ -13,8 +13,14 @@
     },
     "img_url": {
       "type": "string"
+    },
+    "price": {
+      "type": "number"
+    },
+    "is_digital": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false,
-  "required": ["title", "description", "img_url"]
+  "required": ["title", "description", "img_url", "price"]
 }
