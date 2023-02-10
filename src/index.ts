@@ -18,7 +18,7 @@ const app = express();
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.vdzofgq.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://zimbabwe123:SLIR7CaDFLhEeZ4z@cluster0.vdzofgq.mongodb.net/?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("Mongo connection open");
