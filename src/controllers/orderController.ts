@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import CartModel from "../models/CartModel";
 import OrderModel from "../models/OrderModel";
 import UserModel from "../models/UserModel";
-import PaymentModel from "../models/PaymentModel";
 
 export const getOrders = async (req: Request, res: Response) => {
   const userId = req.params.id;
@@ -14,15 +13,7 @@ export const getOrders = async (req: Request, res: Response) => {
 export const checkout = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
-    const paymentData = req.body;
-    paymentData.userId = userId;
 
-    const newPayment = await PaymentModel.create(paymentData);
-    await newPayment.save();
-    res.json({
-      message: "payment successful",
-      data: newPayment,
-    });
     //put code here to clear the cart and send an email
 
     // let cart = await CartModel.findOne({ userId });

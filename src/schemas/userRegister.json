@@ -24,6 +24,9 @@
     "is_admin": {
       "type": "boolean",
       "default": false
+    },
+    "phone_no": {
+      "type": "string"
     }
   },
   "additionalProperties": false,

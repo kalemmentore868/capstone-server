@@ -3,23 +3,18 @@
   "$id": "http://example.com/example.json",
   "type": "object",
   "properties": {
-    "first_name": {
+    "title": {
       "type": "string",
-      "minLength": 1,
+      "minLength": 3,
       "maxLength": 75
     },
-    "last_name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 75
-    },
-    "phone_number": {
+    "description": {
       "type": "string"
     },
-    "is_admin": {
-      "type": "boolean"
+    "thumbnail": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
-  "required": ["first_name", "last_name", "phone_number"]
+  "required": ["title", "description", "thumbnail"]
 }

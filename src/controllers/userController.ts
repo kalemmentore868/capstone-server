@@ -15,7 +15,7 @@ interface User {
 }
 
 export const getAllUsers = async (req: Request, res: Response) => {
-  const listOfUsers: User[] = await UserModel.find({});
+  const listOfUsers: User[] = await UserModel.getAllUsers();
 
   res.json({
     message: "A list of all the users",
@@ -24,9 +24,9 @@ export const getAllUsers = async (req: Request, res: Response) => {
 };
 
 export const getOneUser = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
 
-  const user = await UserModel.findOne({ _id: id });
+  const user = await UserModel.getUser(id);
 
   if (!user) {
     throw new NotFoundError(`User with id :${id} cannot be found`);
@@ -39,8 +39,8 @@ export const getOneUser = async (req: Request, res: Response) => {
 };
 
 export const updateOneUser = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  let fetchedUser = await UserModel.findOne({ _id: id });
+  const id = parseInt(req.params.id);
+  let fetchedUser = await UserModel.getUser(id);
 
   if (!fetchedUser) {
     res.status(404).json({
@@ -64,12 +64,11 @@ export const updateOneUser = async (req: Request, res: Response) => {
         : fetchedUser.last_name,
     };
 
-    const user = (await UserModel.findOneAndUpdate({ _id: id }, userData, {
-      runValidators: true,
-      new: true,
-    })) || { id: "not found" };
+    // @ts-ignore
+    const user = await UserModel.updateUser(userData, id);
 
     res.json({
+      //@ts-ignore
       message: `User with id ${user.id} was updated`,
       data: user,
     });
@@ -77,16 +76,16 @@ export const updateOneUser = async (req: Request, res: Response) => {
 };
 
 export const deleteOneUser = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
 
-  const user = await UserModel.findOne({ _id: id });
+  const user = await UserModel.getUser(id);
 
   if (!user) {
     res.status(404).json({
       message: `User with id :${id} cannot be found`,
     });
   } else {
-    await UserModel.deleteOne({ _id: id });
+    await UserModel.deleteUser(id);
     res.json({
       message: `User with id ${id} was deleted`,
     });

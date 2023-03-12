@@ -22,7 +22,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   //authenticate
-  const user = await UserModel.findOne({ email });
+  const user = await UserModel.getUserByEmail(email);
 
   if (!user) {
     res.json({ message: "Username or password is incorrect" });
@@ -63,24 +63,18 @@ export const signup = async (req: Request, res: Response) => {
 
   if (!validator.valid) {
     const errs = cleanUpErrorMesssages(validator.errors);
-
     throw new BadRequestError(errs);
   }
 
-  const foundUser = await UserModel.findOne({ email: userData.email });
-
+  const foundUser = await UserModel.getUserByEmail(userData.email);
+  console.log("where");
   if (foundUser) {
     throw new BadRequestError(
       `Sorry the email ${req.body.email} already exists`
     );
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(userData.password, salt);
-  userData.password = hashPassword;
-
-  const user = new UserModel(userData); // create
-  await user.save();
+  const user = await UserModel.createUser(userData); // create
 
   const SECRET_KEY = process.env.SECRET_KEY || "dog";
   const token = jwt.sign(
@@ -107,7 +101,7 @@ export const signup = async (req: Request, res: Response) => {
   });
 };
 
-const adminSignup = async (req: Request, res: Response) => {
+export const adminSignup = async (req: Request, res: Response) => {
   const userData = req.body;
 
   const validator = jsonschema.validate(req.body, adminRegisterSchema);
@@ -117,7 +111,7 @@ const adminSignup = async (req: Request, res: Response) => {
     throw new BadRequestError(errs);
   }
 
-  const foundUser = await UserModel.findOne({ email: userData.email });
+  const foundUser = await UserModel.getUserByEmail(userData.email);
 
   if (foundUser) {
     throw new BadRequestError(
@@ -125,12 +119,7 @@ const adminSignup = async (req: Request, res: Response) => {
     );
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(userData.password, salt);
-  userData.password = hashPassword;
-
-  const user = new UserModel(userData); // create
-  await user.save();
+  const user = UserModel.createUser(userData);
 
   console.log("User", user);
   res.status(201).json({
