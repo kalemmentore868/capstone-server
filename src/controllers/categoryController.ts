@@ -71,7 +71,7 @@ export const updateCategory = async (req: Request, res: Response) => {
       id: "not found",
     };
     res.json({
-      message: `Product with id ${category.id} was updated`,
+      message: `Category with id ${category.id} was updated`,
       data: category,
     });
   }
@@ -88,7 +88,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
   } else {
     await CategoryModel.deleteCategory(id);
     res.json({
-      message: `Product with id: ${id} was deleted`,
+      message: `Category with id: ${id} was deleted`,
     });
   }
 };

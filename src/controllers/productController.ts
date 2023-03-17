@@ -1,20 +1,14 @@
 import { Request, Response } from "express";
 import ProductModel from "../models/ProductModel";
+import { ProductType } from "../models/ProductModel";
 import productCreateSchema from "../schemas/productCreate.json";
 import productUpdateSchema from "../schemas/productUpdate.json";
 import { BadRequestError, NotFoundError } from "../helpers/expressError";
 import cleanUpErrorMesssages from "../helpers/jsonSchemaHelper";
 import jsonschema from "jsonschema";
 
-interface Product {
-  title: string;
-  description: string;
-  price: number;
-  img_url: string;
-}
-
 export const getAllProducts = async (req: Request, res: Response) => {
-  const listOfProducts: Product[] = await ProductModel.find({});
+  const listOfProducts: ProductType[] = await ProductModel.getAllProducts();
   res.json({
     message: "A list of all products",
     data: listOfProducts,
@@ -22,9 +16,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
 };
 
 export const getSingleProduct = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
 
-  const product = await ProductModel.findOne({ _id: id });
+  const product = await ProductModel.getProduct(id);
 
   if (!product) {
     throw new NotFoundError(`Product with id : ${id} cannot be found`);
@@ -47,8 +41,7 @@ export const createProduct = async (req: Request, res: Response) => {
     throw new BadRequestError(errs);
   }
 
-  const product = new ProductModel(productData);
-  await product.save();
+  const product = await ProductModel.createProduct(productData);
 
   res.status(201).json({
     message: "A Product was created!",
@@ -57,13 +50,13 @@ export const createProduct = async (req: Request, res: Response) => {
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
 
-  const fetchedProduct = await ProductModel.findOne({ _id: id });
+  const fetchedProduct = await ProductModel.getProduct(id);
 
   if (!fetchedProduct) {
     res.status(404).json({
-      message: `Product with id: ${id} cannt be found`,
+      message: `Product with id: ${id} cannot be found`,
     });
   } else {
     const validator = jsonschema.validate(req.body, productUpdateSchema);
@@ -73,14 +66,9 @@ export const updateProduct = async (req: Request, res: Response) => {
       throw new BadRequestError(errs);
     }
 
-    const product = (await ProductModel.findOneAndUpdate(
-      { _id: id },
-      req.body,
-      {
-        runValidators: true,
-        new: true,
-      }
-    )) || { id: "not found" };
+    const product = (await ProductModel.updateProduct(req.body, id)) || {
+      id: "not found",
+    };
     res.json({
       message: `Product with id ${product.id} was updated`,
       data: product,
@@ -89,15 +77,15 @@ export const updateProduct = async (req: Request, res: Response) => {
 };
 
 export const deleteProduct = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const fetchedProduct = await ProductModel.findOne({ _id: id });
+  const id = parseInt(req.params.id);
+  const fetchedProduct = await ProductModel.getProduct(id);
 
   if (!fetchedProduct) {
     res.status(404).json({
-      message: `Product with id: ${id} cannt be found`,
+      message: `Product with id: ${id} cannot be found`,
     });
   } else {
-    await ProductModel.deleteOne({ _id: id });
+    await ProductModel.deleteProduct(id);
     res.json({
       message: `Product with id: ${id} was deleted`,
     });

@@ -1,5 +1,4 @@
 import db from "../config/db";
-import bcrypt from "bcrypt";
 
 export interface CategoryType {
   id: number;
@@ -39,7 +38,7 @@ class CategoryModel {
 
   static async updateCategory(category_form_data: CategoryType, id: number) {
     const results = await db.query(
-      `UPDATE users SET title ='${category_form_data.title}',
+      `UPDATE categories SET title ='${category_form_data.title}',
           description='${category_form_data.description}',
           thumbnail='${category_form_data.thumbnail}'
           WHERE id=${id}
