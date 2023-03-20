@@ -33,7 +33,7 @@ export const login = async (req: Request, res: Response) => {
       const SECRET_KEY = process.env.SECRET_KEY || "dog";
       const token = jwt.sign(
         {
-          _id: user._id,
+          id: user.id,
           first_name: user.first_name,
           last_name: user.last_name,
           email: user.email,
@@ -44,7 +44,7 @@ export const login = async (req: Request, res: Response) => {
       res.json({
         message: "login successful",
         data: {
-          _id: user._id,
+          id: user.id,
           first_name: user.first_name,
           last_name: user.last_name,
           email: user.email,
@@ -67,7 +67,7 @@ export const signup = async (req: Request, res: Response) => {
   }
 
   const foundUser = await UserModel.getUserByEmail(userData.email);
-  console.log("where");
+
   if (foundUser) {
     throw new BadRequestError(
       `Sorry the email ${req.body.email} already exists`
@@ -79,7 +79,7 @@ export const signup = async (req: Request, res: Response) => {
   const SECRET_KEY = process.env.SECRET_KEY || "dog";
   const token = jwt.sign(
     {
-      _id: user._id,
+      id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
@@ -91,7 +91,7 @@ export const signup = async (req: Request, res: Response) => {
   res.status(201).json({
     message: "A User was created!",
     data: {
-      _id: user._id,
+      id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,

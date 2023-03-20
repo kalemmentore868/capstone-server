@@ -25,7 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
-// app.use("/api/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 // app.use("/api/order", orderRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {

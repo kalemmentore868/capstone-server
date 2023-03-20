@@ -74,7 +74,14 @@ function ensureCorrectUserOrAdmin(
   try {
     const user = res.locals.user;
 
-    if (!(user && (user.is_admin || user.id === parseInt(req.params.id)))) {
+    if (
+      !(
+        user &&
+        (user.is_admin ||
+          user.id === parseInt(req.params.id) ||
+          user.id === parseInt(req.params.userId))
+      )
+    ) {
       throw new UnauthorizedError();
     }
 
