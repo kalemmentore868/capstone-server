@@ -1,13 +1,34 @@
 import { Request, Response } from "express";
 import CartModel from "../models/CartModel";
-import OrderModel from "../models/OrderModel";
+import OrderItemModel, { OrderItemType } from "../models/OrderItemModel";
+import OrderModel, { OrderType } from "../models/OrderModel";
 import UserModel from "../models/UserModel";
 
 export const getOrders = async (req: Request, res: Response) => {
-  const userId = req.params.id;
-  OrderModel.find({ userId })
-    .sort({ date: -1 })
-    .then((orders) => res.json(orders));
+  const userId = parseInt(req.params.id);
+  const order: OrderType = await OrderModel.getOrderByUserId(userId);
+
+  if (!order) {
+    res.json({
+      message: "No orders",
+    });
+  } else {
+    const orderItems: OrderItemType[] =
+      await OrderItemModel.getAllItemsFromOrder(order.id);
+    if (orderItems.length <= 0) {
+      res.json({
+        message: "No orders",
+      });
+    } else {
+      res.json({
+        message: "a list of all ordered items and total",
+        data: {
+          orderItems,
+          total: order.total,
+        },
+      });
+    }
+  }
 };
 
 export const checkout = async (req: Request, res: Response) => {

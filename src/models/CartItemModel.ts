@@ -40,7 +40,7 @@ class CartItemModel {
     //ALWAYS RETURN 0 or 1
     //db.query() - ASYNC OPERATIONS!!! THAT IT WILL ALWAYS  PROMISE!!!!!!!!
     const results = await db.query(
-      `SELECT id, user_id, total FROM cart_items WHERE id = '${id}`
+      `SELECT id, cart_id user_id, total FROM cart_items WHERE id = '${id}`
     );
     return results.rows[0];
   }
