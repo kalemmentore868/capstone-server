@@ -65,10 +65,11 @@ export const updateOneUser = async (req: Request, res: Response) => {
     };
 
     // @ts-ignore
-    const user = await UserModel.updateUser(userData, id);
+    const user = (await UserModel.updateUser(userData, id)) || {
+      id: "not found",
+    };
 
     res.json({
-      //@ts-ignore
       message: `User with id ${user.id} was updated`,
       data: user,
     });

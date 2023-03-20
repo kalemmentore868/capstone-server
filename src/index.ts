@@ -9,6 +9,7 @@ import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
 import cartRoutes from "./routes/cartRoutes";
+import sellerRoutes from "./routes/sellerRoutes";
 import orderRoutes from "./routes/orderRoutes";
 import { ExpressError, NotFoundError } from "./helpers/expressError";
 import { authenticateJWT } from "./middleware/auth";
@@ -26,6 +27,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/sellers", sellerRoutes);
 // app.use("/api/order", orderRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
