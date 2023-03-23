@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import CartModel, { CartType } from "../models/CartModel";
 import ProductModel, { ProductType } from "../models/ProductModel";
 import CartItemModel, { CartItemType } from "../models/CArtItemModel";
-import { getCartTotal } from "../helpers/cartHelpers";
+import { getCartObj } from "../helpers/cartHelpers";
 
 export const getCartItems = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id);
@@ -19,12 +19,10 @@ export const getCartItems = async (req: Request, res: Response) => {
         message: "No Items In Cart",
       });
     } else {
+      const cartObj = await getCartObj(cart.id, cart.user_id);
       res.json({
         message: "a list of all Cart Items and total",
-        data: {
-          cartItems,
-          total: cart.total,
-        },
+        data: cartObj,
       });
     }
   }
@@ -53,12 +51,10 @@ export const addCartItem = async (req: Request, res: Response) => {
       productId,
       quantity
     );
+    const cartObj = await getCartObj(newCart.id, newCart.user_id);
     res.json({
       message: "a list of all Cart Items and total",
-      data: {
-        cartItems: [cartItem],
-        total,
-      },
+      data: cartObj,
     });
   } else {
     //cart exists
@@ -73,16 +69,12 @@ export const addCartItem = async (req: Request, res: Response) => {
     } else {
       await CartItemModel.createCartItem(cart.id, productId, quantity);
     }
-    const newTotal = await getCartTotal(cart.id);
-    await CartModel.updateCartTotal(newTotal, cart.id);
-    const cartItems = await CartItemModel.getAllCartItemsInCart(cart.id);
+    const cartObj = await getCartObj(cart.id, cart.user_id);
+    await CartModel.updateCartTotal(cartObj.bill, cart.id);
 
     res.json({
       message: "a list of all Cart Items and total",
-      data: {
-        cartItems,
-        total: newTotal,
-      },
+      data: cartObj,
     });
   }
 };
@@ -116,16 +108,12 @@ export const updateCartItem = async (req: Request, res: Response) => {
         message: "Item not found in Cart",
       });
     }
-    const newTotal = await getCartTotal(cart.id);
-    await CartModel.updateCartTotal(newTotal, cart.id);
-    const cartItems = await CartItemModel.getAllCartItemsInCart(cart.id);
+    const cartObj = await getCartObj(cart.id, cart.user_id);
+    await CartModel.updateCartTotal(cartObj.bill, cart.id);
 
     res.json({
       message: "a list of all Cart Items and total",
-      data: {
-        cartItems,
-        total: newTotal,
-      },
+      data: cartObj,
     });
   }
 };
@@ -149,16 +137,12 @@ export const deleteCartItem = async (req: Request, res: Response) => {
     } else {
       await CartItemModel.deleteCartItem(cartItem.id);
     }
-    const newTotal = await getCartTotal(cart.id);
-    await CartModel.updateCartTotal(newTotal, cart.id);
-    const cartItems = await CartItemModel.getAllCartItemsInCart(cart.id);
+    const cartObj = await getCartObj(cart.id, cart.user_id);
+    await CartModel.updateCartTotal(cartObj.bill, cart.id);
 
     res.json({
       message: "a list of all Cart Items and total",
-      data: {
-        cartItems,
-        total: newTotal,
-      },
+      data: cartObj,
     });
   }
 };

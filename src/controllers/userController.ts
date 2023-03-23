@@ -62,6 +62,9 @@ export const updateOneUser = async (req: Request, res: Response) => {
       last_name: req.body.last_name
         ? req.body.last_name
         : fetchedUser.last_name,
+      phone_number: req.body.phone_number
+        ? req.body.phone_number
+        : fetchedUser.phone_number,
     };
 
     // @ts-ignore

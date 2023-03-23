@@ -78,6 +78,8 @@ export const signup = async (req: Request, res: Response) => {
     );
   }
 
+  userData.is_admin = false;
+
   const user: UserType = await UserModel.createUser(userData); // create
 
   const { id, first_name, last_name, email, is_admin, phone_number } = user;
