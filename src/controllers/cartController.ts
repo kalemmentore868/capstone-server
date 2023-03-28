@@ -46,11 +46,7 @@ export const addCartItem = async (req: Request, res: Response) => {
   if (!cart) {
     const total = product.price * quantity;
     const newCart: CartType = await CartModel.createCart(userId, total);
-    const cartItem: CartItemType = await CartItemModel.createCartItem(
-      newCart.id,
-      productId,
-      quantity
-    );
+    await CartItemModel.createCartItem(newCart.id, productId, quantity);
     const cartObj = await getCartObj(newCart.id, newCart.user_id);
     res.json({
       message: "a list of all Cart Items and total",

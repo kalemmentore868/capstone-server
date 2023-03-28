@@ -64,12 +64,13 @@ export const signup = async (req: Request, res: Response) => {
   const userData = req.body;
 
   const validator = jsonschema.validate(req.body, userRegisterSchema);
-
+  console.log(1);
   if (!validator.valid) {
     const errs = cleanUpErrorMesssages(validator.errors);
     throw new BadRequestError(errs);
   }
 
+  console.log(2);
   const foundUser = await UserModel.getUserByEmail(userData.email);
 
   if (foundUser) {
@@ -77,7 +78,7 @@ export const signup = async (req: Request, res: Response) => {
       `Sorry the email ${req.body.email} already exists`
     );
   }
-
+  console.log(3);
   userData.is_admin = false;
 
   const user: UserType = await UserModel.createUser(userData); // create

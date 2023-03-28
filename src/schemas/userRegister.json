@@ -4,22 +4,16 @@
   "type": "object",
   "properties": {
     "first_name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 75
+      "type": "string"
     },
     "last_name": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 75
+      "type": "string"
     },
     "email": {
       "type": "string"
     },
     "password": {
-      "type": "string",
-      "minLength": 5,
-      "maxLength": 20
+      "type": "string"
     },
     "is_admin": {
       "type": "boolean",
