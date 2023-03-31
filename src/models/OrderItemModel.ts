@@ -1,7 +1,7 @@
 import db from "../config/db";
 
 export interface OrderItemType {
-  id: number;
+  id?: number;
   order_id: number;
   product_id: number;
   quantity: number;

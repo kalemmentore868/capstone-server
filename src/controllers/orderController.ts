@@ -1,8 +1,21 @@
 import { Request, Response } from "express";
-import CartModel from "../models/CartModel";
+import CartItemModel, { CartItemType } from "../models/CArtItemModel";
+import CartModel, { CartType } from "../models/CartModel";
 import OrderItemModel, { OrderItemType } from "../models/OrderItemModel";
 import OrderModel, { OrderType } from "../models/OrderModel";
 import UserModel from "../models/UserModel";
+import nodemailer from "nodemailer";
+import { getOrdersAsString } from "../helpers/formatOrderEmail";
+
+let transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 
 export const getOrders = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id);
@@ -33,33 +46,50 @@ export const getOrders = async (req: Request, res: Response) => {
 
 export const checkout = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.id;
+    const userId = parseInt(req.params.id);
+    const notes = req.body.notes;
 
-    //put code here to clear the cart and send an email
+    let cart: CartType = await CartModel.getCartByUserId(userId);
+    let user = await UserModel.getUser(userId);
+    const email = user.email;
+    if (cart) {
+      const cartItems = await CartItemModel.getAllCartItemsInCart(cart.id);
+      const orderObj = {
+        user_id: userId,
+        total: cart.total,
+        notes,
+      };
+      // @ts-ignore
+      const order = await OrderModel.createOrder(orderObj);
 
-    // let cart = await CartModel.findOne({ userId });
-    // let user = await UserModel.findOne({ _id: userId });
-    // const email = user?.email;
-    // if (cart) {
-    //   const charge = await stripe.charges.create({
-    //     amount: cart.bill,
-    //     currency: "inr",
-    //     source: source,
-    //     receipt_email: email,
-    //   });
-    //   if (!charge) throw Error("Payment failed");
-    //   if (charge) {
-    //     const order = await Order.create({
-    //       userId,
-    //       items: cart.items,
-    //       bill: cart.bill,
-    //     });
-    //     const data = await Cart.findByIdAndDelete({ _id: cart.id });
-    //     return res.status(201).send(order);
-    //   }
-    // } else {
-    //   res.status(500).send("You do not have items in cart");
-    // }
+      for (let i = 0; i < cartItems.length; i++) {
+        const cartItem: CartItemType = cartItems[i];
+        await OrderItemModel.createOrderItem(
+          order.id,
+          cartItem.product_id,
+          cartItem.quantity
+        );
+        await CartItemModel.deleteCartItem(cartItem.id);
+      }
+
+      let mailOptions = {
+        from: process.env.EMAIL_USERNAME,
+        to: email,
+        subject: `Order made #${order.id}`,
+        text: await getOrdersAsString(order.id),
+      };
+
+      try {
+        const emailRes = await transporter.sendMail(mailOptions);
+        console.log("message sent", emailRes.messageId);
+      } catch (error) {
+        console.log(error);
+      }
+      await CartModel.deleteCart(cart.id);
+      return res.status(201).json({ message: "Order made" });
+    } else {
+      res.status(500).send("You do not have items in cart");
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send("Something went wrong");

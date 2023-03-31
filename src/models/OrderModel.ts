@@ -10,7 +10,7 @@ export interface OrderType {
 class OrderModel {
   static async createOrder(order: OrderType) {
     const results = await db.query(
-      `INSERT INTO oders (user_id, total, notes) VALUES('${order.user_id}','${order.total}','${order.notes}') RETURNING *`
+      `INSERT INTO orders (user_id, total, notes) VALUES('${order.user_id}','${order.total}','${order.notes}') RETURNING *`
     );
     return results.rows[0];
   }
