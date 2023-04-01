@@ -60,7 +60,7 @@ export const checkout = async (req: Request, res: Response) => {
         notes,
       };
       // @ts-ignore
-      const order = await OrderModel.createOrder(orderObj);
+      const order: OrderType = await OrderModel.createOrder(orderObj);
 
       for (let i = 0; i < cartItems.length; i++) {
         const cartItem: CartItemType = cartItems[i];
@@ -72,11 +72,17 @@ export const checkout = async (req: Request, res: Response) => {
         await CartItemModel.deleteCartItem(cartItem.id);
       }
 
+      let orderedItems = await getOrdersAsString(order.id);
+
       let mailOptions = {
         from: process.env.EMAIL_USERNAME,
         to: email,
         subject: `Order made #${order.id}`,
-        text: await getOrdersAsString(order.id),
+        text: `Thank you for your purchase! 
+
+       items: ${orderedItems}
+       total: $${order.total}
+       Notes: ${order.notes}`,
       };
 
       try {

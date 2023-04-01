@@ -28,7 +28,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/sellers", sellerRoutes);
-// app.use("/api/order", orderRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   throw new NotFoundError();

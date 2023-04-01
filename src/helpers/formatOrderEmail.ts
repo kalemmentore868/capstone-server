@@ -8,7 +8,7 @@ export const getOrdersAsString = async (orderId: number) => {
   for (let i = 0; i < orderedItems.length; i++) {
     const item = orderedItems[i];
     // @ts-ignore
-    const product: ProductType = await ProductModel.getProduct(item.id);
+    const product: ProductType = await ProductModel.getProduct(item.product_id);
     email += `
        
         Item Name: ${product.title}
