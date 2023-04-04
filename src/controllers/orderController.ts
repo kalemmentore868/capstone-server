@@ -4,18 +4,8 @@ import CartModel, { CartType } from "../models/CartModel";
 import OrderItemModel, { OrderItemType } from "../models/OrderItemModel";
 import OrderModel, { OrderType } from "../models/OrderModel";
 import UserModel from "../models/UserModel";
-import nodemailer from "nodemailer";
 import { getOrdersAsString } from "../helpers/formatOrderEmail";
-
-let transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_USERNAME,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
+import { sendEmail } from "../helpers/sendEmail";
 
 export const getOrders = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id);
@@ -73,24 +63,13 @@ export const checkout = async (req: Request, res: Response) => {
       }
 
       let orderedItems = await getOrdersAsString(order.id);
-
-      let mailOptions = {
-        from: process.env.EMAIL_USERNAME,
-        to: email,
-        subject: `Order made #${order.id}`,
-        text: `Thank you for your purchase! 
+      const subject = `Order made #${order.id}`;
+      const text = `Thank you for your purchase! 
 
        items: ${orderedItems}
        total: $${order.total}
-       Notes: ${order.notes}`,
-      };
-
-      try {
-        const emailRes = await transporter.sendMail(mailOptions);
-        console.log("message sent", emailRes.messageId);
-      } catch (error) {
-        console.log(error);
-      }
+       Notes: ${order.notes}`;
+      sendEmail(email, subject, text);
       await CartModel.deleteCart(cart.id);
       return res.status(201).json({ message: "Order made" });
     } else {

@@ -58,6 +58,10 @@ class ProductModel {
     );
     return results.rows[0];
   }
+
+  static async deleteAllProducts() {
+    await db.query("DELETE FROM products");
+  }
 }
 
 export default ProductModel;

@@ -9,6 +9,7 @@ import userAuthSchema from "../schemas/userAuth.json";
 import userRegisterSchema from "../schemas/userRegister.json";
 import adminRegisterSchema from "../schemas/adminRegister.json";
 import SellerModel from "../models/SellerModel";
+import { sendEmail } from "../helpers/sendEmail";
 
 export const login = async (req: Request, res: Response) => {
   //validate
@@ -84,6 +85,12 @@ export const signup = async (req: Request, res: Response) => {
   const user: UserType = await UserModel.createUser(userData); // create
 
   const { id, first_name, last_name, email, is_admin, phone_number } = user;
+
+  sendEmail(
+    email,
+    `Welcome ${first_name} ${last_name}`,
+    "Thanks for signing up!"
+  );
 
   const SECRET_KEY = process.env.SECRET_KEY || "dog";
   const token = jwt.sign(

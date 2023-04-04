@@ -1,4 +1,8 @@
 import { Client, types } from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 const db = new Client({
   host: process.env.DATABASE_HOST,
   // @ts-ignore
