@@ -6,12 +6,14 @@ import productUpdateSchema from "../schemas/productUpdate.json";
 import { BadRequestError, NotFoundError } from "../helpers/expressError";
 import cleanUpErrorMesssages from "../helpers/jsonSchemaHelper";
 import jsonschema from "jsonschema";
+import { applyFilters } from "../helpers/applyFilter";
 
 export const getAllProducts = async (req: Request, res: Response) => {
   const listOfProducts: ProductType[] = await ProductModel.getAllProducts();
+  let filteredProducts = applyFilters(listOfProducts, req.query);
   res.json({
     message: "A list of all products",
-    data: listOfProducts,
+    data: filteredProducts,
   });
 };
 

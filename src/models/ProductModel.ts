@@ -24,7 +24,7 @@ class ProductModel {
   static async getAllProducts() {
     // ALWAYS RETURN 0 OR MANY!!
     const results = await db.query(
-      "SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id FROM products;"
+      "SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id, created_at FROM products;"
     );
 
     return results.rows;
@@ -34,7 +34,7 @@ class ProductModel {
     // ALWAYS RETURN 0 or 1
     // db.query() - ASYNC OPERATIONS!!! THAT IT WILL ALWAYS  PROMISE!!!!!!!!
     const results = await db.query(
-      `SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id FROM products WHERE id = ${id}`
+      `SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id, created_at FROM products WHERE id = ${id}`
     );
     return results.rows[0];
   }
