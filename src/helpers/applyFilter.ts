@@ -28,7 +28,7 @@ export function applyFilters(
       case "newest arrivals":
         return b.created_at.getTime() - a.created_at.getTime();
       case "popularity":
-        return b.rating - a.rating;
+        return Number(b.is_best_seller) - Number(a.is_best_seller);
       default:
         return a.title.localeCompare(b.title);
     }
