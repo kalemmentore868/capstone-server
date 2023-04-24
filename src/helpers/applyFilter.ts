@@ -36,7 +36,7 @@ export function applyFilters(
 
   let categorized_products: ProductType[] = [];
 
-  if (category_id) {
+  if (category_id?.length && category_id.length > 0) {
     let categoryId = parseInt(category_id);
     for (const product of sortedProducts) {
       if (product.category_id === categoryId) {

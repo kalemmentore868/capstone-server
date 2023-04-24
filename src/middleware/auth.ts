@@ -78,8 +78,8 @@ function ensureCorrectUserOrAdmin(
       !(
         user &&
         (user.is_admin ||
-          user.id === parseInt(req.params.id) ||
-          user.id === parseInt(req.params.userId))
+          parseInt(user.id) === parseInt(req.params.id) ||
+          parseInt(user.id) === parseInt(req.params.userId))
       )
     ) {
       throw new UnauthorizedError();

@@ -34,6 +34,8 @@ export const getSingleProduct = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   const productData = req.body;
+  productData.price = parseInt(productData.price);
+  productData.category_id = parseInt(productData.category_id);
 
   const validator = jsonschema.validate(productData, productCreateSchema);
 
@@ -53,6 +55,9 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
+  const productData = req.body;
+  productData.price = parseInt(productData.price);
+  productData.category_id = parseInt(productData.category_id);
 
   const fetchedProduct = await ProductModel.getProduct(id);
 
@@ -61,14 +66,14 @@ export const updateProduct = async (req: Request, res: Response) => {
       message: `Product with id: ${id} cannot be found`,
     });
   } else {
-    const validator = jsonschema.validate(req.body, productUpdateSchema);
+    const validator = jsonschema.validate(productData, productUpdateSchema);
 
     if (!validator.valid) {
       const errs = cleanUpErrorMesssages(validator.errors);
       throw new BadRequestError(errs);
     }
 
-    const product = (await ProductModel.updateProduct(req.body, id)) || {
+    const product = (await ProductModel.updateProduct(productData, id)) || {
       id: "not found",
     };
     res.json({

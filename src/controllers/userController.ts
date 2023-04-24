@@ -72,6 +72,8 @@ export const updateOneUser = async (req: Request, res: Response) => {
       id: "not found",
     };
 
+    delete user.password;
+
     res.json({
       message: `User with id ${user.id} was updated`,
       data: user,

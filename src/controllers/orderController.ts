@@ -6,29 +6,39 @@ import OrderModel, { OrderType } from "../models/OrderModel";
 import UserModel from "../models/UserModel";
 import { getOrdersAsString } from "../helpers/formatOrderEmail";
 import { sendEmail } from "../helpers/sendEmail";
+import { getOrderObj } from "../helpers/orderHelper";
 
 export const getOrders = async (req: Request, res: Response) => {
   const userId = parseInt(req.params.id);
-  const order: OrderType = await OrderModel.getOrderByUserId(userId);
+  const orders: OrderType[] = await OrderModel.getAllUsersOrders(userId);
 
-  if (!order) {
+  if (orders.length <= 0) {
     res.json({
       message: "No orders",
     });
   } else {
-    const orderItems: OrderItemType[] =
-      await OrderItemModel.getAllItemsFromOrder(order.id);
-    if (orderItems.length <= 0) {
+    const listOfOrderObj = [];
+
+    for (const order of orders) {
+      const orderItems: OrderItemType[] =
+        await OrderItemModel.getAllItemsFromOrder(order.id);
+
+      const orderObj = await getOrderObj(
+        orderItems,
+        order.created_at,
+        order.id
+      );
+      listOfOrderObj.push(orderObj);
+    }
+
+    if (listOfOrderObj.length <= 0) {
       res.json({
         message: "No orders",
       });
     } else {
       res.json({
         message: "a list of all ordered items and total",
-        data: {
-          orderItems,
-          total: order.total,
-        },
+        data: listOfOrderObj,
       });
     }
   }

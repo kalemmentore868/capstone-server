@@ -46,16 +46,18 @@ var productUpdate_json_1 = __importDefault(require("../schemas/productUpdate.jso
 var expressError_1 = require("../helpers/expressError");
 var jsonSchemaHelper_1 = __importDefault(require("../helpers/jsonSchemaHelper"));
 var jsonschema_1 = __importDefault(require("jsonschema"));
+var applyFilter_1 = require("../helpers/applyFilter");
 var getAllProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var listOfProducts;
+    var listOfProducts, filteredProducts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, ProductModel_1.default.getAllProducts()];
             case 1:
                 listOfProducts = _a.sent();
+                filteredProducts = (0, applyFilter_1.applyFilters)(listOfProducts, req.query);
                 res.json({
                     message: "A list of all products",
-                    data: listOfProducts,
+                    data: filteredProducts,
                 });
                 return [2 /*return*/];
         }

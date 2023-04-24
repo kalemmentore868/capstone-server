@@ -61,7 +61,7 @@ var ProductModel = /** @class */ (function () {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id FROM products;")];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id, created_at FROM products;")];
                     case 1:
                         results = _a.sent();
                         return [2 /*return*/, results.rows];
@@ -74,7 +74,7 @@ var ProductModel = /** @class */ (function () {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, db_1.default.query("SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id FROM products WHERE id = ".concat(id))];
+                    case 0: return [4 /*yield*/, db_1.default.query("SELECT id, title, description, category_id, rating, is_best_seller, img_url, price, seller_id, created_at FROM products WHERE id = ".concat(id))];
                     case 1:
                         results = _a.sent();
                         return [2 /*return*/, results.rows[0]];

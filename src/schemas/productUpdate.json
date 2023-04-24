@@ -25,6 +25,12 @@
     },
     "category_id": {
       "type": "number"
+    },
+    "id": {
+      "type": "number"
+    },
+    "seller_id": {
+      "type": "number"
     }
   },
   "additionalProperties": false,

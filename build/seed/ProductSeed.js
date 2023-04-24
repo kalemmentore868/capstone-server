@@ -119,7 +119,6 @@ var seedProducts = function () { return __awaiter(void 0, void 0, void 0, functi
                 return [4 /*yield*/, CategoryModel_1.default.getCategoryByTitle(categories[i])];
             case 2:
                 category = _a.sent();
-                console.log(category);
                 productObj = {
                     title: productTitles[i],
                     price: productPrices[i],

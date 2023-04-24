@@ -18,6 +18,15 @@
     },
     "is_admin": {
       "type": "boolean"
+    },
+    "email": {
+      "type": "string"
+    },
+    "token": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
     }
   },
   "additionalProperties": false,

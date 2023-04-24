@@ -5,6 +5,7 @@ export interface OrderType {
   user_id: number;
   total: number;
   notes: string;
+  created_at?: Date;
 }
 
 class OrderModel {
@@ -17,7 +18,7 @@ class OrderModel {
   static async getAllOrders() {
     //ALWAYS RETURN 0 OR MANY!!
     const results = await db.query(
-      "SELECT id, user_id, total, notes FROM orders;"
+      "SELECT id, user_id, total, notes, created_at FROM orders;"
     );
 
     return results.rows;
@@ -27,7 +28,7 @@ class OrderModel {
     //ALWAYS RETURN 0 or 1
     //db.query() - ASYNC OPERATIONS!!! THAT IT WILL ALWAYS  PROMISE!!!!!!!!
     const results = await db.query(
-      `SELECT id, user_id, total, notes FROM orders WHERE id = '${id}'`
+      `SELECT id, user_id, total, notes, created_at FROM orders WHERE id = '${id}'`
     );
     return results.rows[0];
   }
@@ -36,9 +37,18 @@ class OrderModel {
     //ALWAYS RETURN 0 or 1
     //db.query() - ASYNC OPERATIONS!!! THAT IT WILL ALWAYS  PROMISE!!!!!!!!
     const results = await db.query(
-      `SELECT id, user_id, total, notes FROM orders WHERE user_id = '${user_id}'`
+      `SELECT id, user_id, total, notes, created_at FROM orders WHERE user_id = '${user_id}'`
     );
     return results.rows[0];
+  }
+
+  static async getAllUsersOrders(user_id: number) {
+    //ALWAYS RETURN 0 or 1
+    //db.query() - ASYNC OPERATIONS!!! THAT IT WILL ALWAYS  PROMISE!!!!!!!!
+    const results = await db.query(
+      `SELECT id, user_id, total, notes, created_at FROM orders WHERE user_id = '${user_id}'`
+    );
+    return results.rows;
   }
 
   static async deleteOrder(id: number) {

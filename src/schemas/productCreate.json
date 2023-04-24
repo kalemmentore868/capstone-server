@@ -26,8 +26,11 @@
     "category_id": {
       "type": "number"
     },
-    "seller": {
-      "type": "string"
+    "seller_id": {
+      "type": "number"
+    },
+    "id": {
+      "type": "number"
     }
   },
   "additionalProperties": false,
@@ -39,6 +42,6 @@
     "is_best_seller",
     "rating",
     "category_id",
-    "seller"
+    "seller_id"
   ]
 }
