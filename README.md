@@ -47,8 +47,8 @@ This is the server component of the What Tuh Eat application. It is built using 
    DATABASE_NAME=<db name>
    PORT=<port for application>
    SECRET_KEY=<secret key for JWT>
-   EMAIL_USERNAME=whattuheat@gmail.com
-   EMAIL_PASSWORD=lehrvujfailklfya
+   EMAIL_USERNAME=<email>
+   EMAIL_PASSWORD=<email password>
    ```
 
    Note: If your database doesn't have a password, remove the `DATABASE_PASSWORD` environment variable from the `.env` file.
