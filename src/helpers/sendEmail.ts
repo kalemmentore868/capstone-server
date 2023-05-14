@@ -24,7 +24,29 @@ export const sendEmail = async (
 
   try {
     const emailRes = await transporter.sendMail(mailOptions);
-    console.log("message sent", emailRes.messageId);
+
+    return "Email Sent";
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const sendEmailHtml = async (
+  email: string,
+  subject: string,
+  html: string
+) => {
+  let mailOptions = {
+    from: process.env.EMAIL_USERNAME,
+    to: email,
+    subject,
+    html,
+  };
+
+  try {
+    const emailRes = await transporter.sendMail(mailOptions);
+
     return "Email Sent";
   } catch (error) {
     console.log(error);

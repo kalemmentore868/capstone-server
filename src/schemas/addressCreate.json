@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/address.json",
+  "type": "object",
+  "properties": {
+    "house_number": {
+      "type": "string"
+    },
+    "street": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "id": {
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["house_number", "street", "city"]
+}

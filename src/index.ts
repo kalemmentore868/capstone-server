@@ -11,6 +11,7 @@ import categoryRoutes from "./routes/categoryRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import sellerRoutes from "./routes/sellerRoutes";
 import orderRoutes from "./routes/orderRoutes";
+import addressRoutes from "./routes/addressRoutes";
 import { ExpressError, NotFoundError } from "./helpers/expressError";
 import { authenticateJWT } from "./middleware/auth";
 
@@ -29,6 +30,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/sellers", sellerRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/addresses", addressRoutes);
 
 app.use(function (req: Request, res: Response, next: NextFunction) {
   throw new NotFoundError();
