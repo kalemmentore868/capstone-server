@@ -140,7 +140,6 @@ export const adminSignup = async (req: Request, res: Response) => {
   userData.is_admin = true;
   const user = UserModel.createUser(userData);
 
-  console.log("User", user);
   res.status(201).json({
     message: "An Admin User was created!",
     data: user,

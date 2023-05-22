@@ -7,6 +7,7 @@ import UserModel from "../models/UserModel";
 import { getOrdersAsString } from "../helpers/formatOrderEmail";
 import { sendEmail, sendEmailHtml } from "../helpers/sendEmail";
 import { getOrderObj } from "../helpers/orderHelper";
+import { AddressType } from "../models/AddressModel";
 
 export const getAllOrdersInDb = async (req: Request, res: Response) => {
   const orders: OrderType[] = await OrderModel.getAllOrders();
@@ -83,6 +84,7 @@ export const checkout = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.id);
     const notes = req.body.notes;
+    const address: AddressType = req.body.address;
 
     let cart: CartType = await CartModel.getCartByUserId(userId);
     let user = await UserModel.getUser(userId);
@@ -109,66 +111,11 @@ export const checkout = async (req: Request, res: Response) => {
 
       let orderedItems = await getOrdersAsString(order.id);
       const subject = `Order made #${order.id}`;
-      const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You for Your Purchase</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      color: #000000;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-    
-      padding: 20px;
-      border-radius: 10px;
-      color: #ffffff;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    h2 {
-      margin-top: 0;
-     background-color: #60be74;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    th, td {
-      text-align: left;
-      padding: 8px 0;
-      font-size: 14px;
-    }
-    th {
-      font-weight: bold;
-    }
-    .total {
-      font-weight: bold;
-    }
-    .notes {
-      margin-top: 20px;
-       font-size: 14px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Thank You for Your Purchase!</h1>
-    <table>
-      ${orderedItems}
-    </table>
-    <p class="notes">Notes: ${notes}</p>
-  </div>
-</body>
-</html>
+      const text = `Thank you for your order. Here is the order details: ${orderedItems}
+      notes: ${notes}
+      address: #${address.house_number}, ${address.street}, ${address.city}
 `;
-      sendEmailHtml(email, subject, html);
+      sendEmail(email, subject, text);
       await CartModel.deleteCart(cart.id);
       return res.status(201).json({ message: "Order made" });
     } else {

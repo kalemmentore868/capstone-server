@@ -78,13 +78,13 @@ export const createAddress = async (req: Request, res: Response) => {
 
 export const updateAddress = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
-  const user_id = parseInt(req.params.user_id);
+  const userId = parseInt(req.params.userId);
   const addressData: AddressType = req.body;
 
-  const fetchedUser = await UserModel.getUser(user_id);
+  const fetchedUser = await UserModel.getUser(userId);
 
   if (!fetchedUser) {
-    throw new NotFoundError(`User with id: ${user_id} cannot be found`);
+    throw new NotFoundError(`User with id: ${userId} cannot be found`);
   }
 
   const fetchedAddress = await AddressModel.getAddress(id);
@@ -104,7 +104,7 @@ export const updateAddress = async (req: Request, res: Response) => {
     const address = (await AddressModel.updateAddress(
       addressData,
       id,
-      user_id
+      userId
     )) || {
       id: "not found",
     };
@@ -119,7 +119,7 @@ export const updateAddress = async (req: Request, res: Response) => {
 export const deleteAddress = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
   const user_id = parseInt(req.params.user_id);
-  console.log("yo");
+
   const fetchedUser = await UserModel.getUser(user_id);
   if (!fetchedUser) {
     throw new NotFoundError(`User with id: ${user_id} cannot be found`);
