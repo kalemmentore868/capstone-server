@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkout = exports.getOrders = exports.getAllOrdersInDb = void 0;
-var CArtItemModel_1 = __importDefault(require("../models/CArtItemModel"));
+var CartItemModel_1 = __importDefault(require("../models/CartItemModel"));
 var CartModel_1 = __importDefault(require("../models/CartModel"));
 var OrderItemModel_1 = __importDefault(require("../models/OrderItemModel"));
 var OrderModel_1 = __importDefault(require("../models/OrderModel"));
@@ -163,7 +163,7 @@ var checkout = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
                 user = _a.sent();
                 email = user.email;
                 if (!cart) return [3 /*break*/, 12];
-                return [4 /*yield*/, CArtItemModel_1.default.getAllCartItemsInCart(cart.id)];
+                return [4 /*yield*/, CartItemModel_1.default.getAllCartItemsInCart(cart.id)];
             case 3:
                 cartItems = _a.sent();
                 orderObj = {
@@ -182,7 +182,7 @@ var checkout = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
                 return [4 /*yield*/, OrderItemModel_1.default.createOrderItem(order.id, cartItem.product_id, cartItem.quantity)];
             case 6:
                 _a.sent();
-                return [4 /*yield*/, CArtItemModel_1.default.deleteCartItem(cartItem.id)];
+                return [4 /*yield*/, CartItemModel_1.default.deleteCartItem(cartItem.id)];
             case 7:
                 _a.sent();
                 _a.label = 8;

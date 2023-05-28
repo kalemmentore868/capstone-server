@@ -4,7 +4,7 @@ import { BadRequestError } from "../helpers/expressError";
 import cleanUpErrorMesssages from "../helpers/jsonSchemaHelper";
 import jsonschema from "jsonschema";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import userAuthSchema from "../schemas/userAuth.json";
 import userRegisterSchema from "../schemas/userRegister.json";
 import adminRegisterSchema from "../schemas/adminRegister.json";

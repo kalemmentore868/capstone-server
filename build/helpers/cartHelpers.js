@@ -40,13 +40,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCartObj = void 0;
-var CArtItemModel_1 = __importDefault(require("../models/CArtItemModel"));
+var CartItemModel_1 = __importDefault(require("../models/CartItemModel"));
 var ProductModel_1 = __importDefault(require("../models/ProductModel"));
 var getCartObj = function (cartId, userId) { return __awaiter(void 0, void 0, void 0, function () {
     var cartItems, total, items, i, item, product, itemTotal, cartObj;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, CArtItemModel_1.default.getAllCartItemsInCart(cartId)];
+            case 0: return [4 /*yield*/, CartItemModel_1.default.getAllCartItemsInCart(cartId)];
             case 1:
                 cartItems = _a.sent();
                 total = 0;
