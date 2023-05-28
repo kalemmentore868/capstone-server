@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 75
+        },
+        "description": {
+            "type": "string"
+        },
+        "img_url": {
+            "type": "string"
+        },
+        "price": {
+            "type": "number"
+        },
+        "is_best_seller": {
+            "type": "boolean"
+        },
+        "rating": {
+            "type": "number"
+        },
+        "category_id": {
+            "type": "number"
+        },
+        "id": {
+            "type": "number"
+        },
+        "seller_id": {
+            "type": "number"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "title",
+        "description",
+        "img_url",
+        "price",
+        "is_best_seller",
+        "rating",
+        "category_id"
+    ]
+}

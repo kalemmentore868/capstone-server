@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CartItemModel, { CartItemType } from "../models/CArtItemModel";
+import CartItemModel, { CartItemType } from "../models/CartItemModel";
 import CartModel, { CartType } from "../models/CartModel";
 import OrderItemModel, { OrderItemType } from "../models/OrderItemModel";
 import OrderModel, { OrderType } from "../models/OrderModel";

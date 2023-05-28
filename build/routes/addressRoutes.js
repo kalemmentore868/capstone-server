@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var addressController_1 = require("../controllers/addressController");
+var auth_1 = require("../middleware/auth");
+var router = (0, express_1.Router)();
+router.get("/", auth_1.ensureAdmin, addressController_1.getAllAddresses);
+router.get("/users/:id", auth_1.ensureCorrectUserOrAdmin, addressController_1.getAllAddressesByUser);
+router.get("/:id", auth_1.ensureCorrectUserOrAdmin, addressController_1.getSingleAddress);
+router.post("/:id", auth_1.ensureCorrectUserOrAdmin, addressController_1.createAddress);
+router.put("/:userId/:id", auth_1.ensureCorrectUserOrAdmin, addressController_1.updateAddress);
+router.delete("/:userId/:id", auth_1.ensureCorrectUserOrAdmin, addressController_1.deleteAddress);
+exports.default = router;

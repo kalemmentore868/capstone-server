@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var userController_1 = require("../controllers/userController");
+var auth_1 = require("../middleware/auth");
+var router = (0, express_1.Router)();
+router.get("/", auth_1.ensureAdmin, userController_1.getAllUsers);
+router.get("/:id", auth_1.ensureCorrectUserOrAdmin, userController_1.getOneUser);
+router.put("/:id", auth_1.ensureCorrectUserOrAdmin, userController_1.updateOneUser);
+router.delete("/:id", auth_1.ensureCorrectUserOrAdmin, userController_1.deleteOneUser);
+exports.default = router;

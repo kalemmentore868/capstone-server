@@ -1,4 +1,4 @@
-import CartItemModel, { CartItemType } from "../models/CArtItemModel";
+import CartItemModel, { CartItemType } from "../models/CartItemModel";
 import ProductModel, { ProductType } from "../models/ProductModel";
 
 export const getCartObj = async (cartId: number, userId: number) => {

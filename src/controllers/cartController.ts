@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CartModel, { CartType } from "../models/CartModel";
 import ProductModel, { ProductType } from "../models/ProductModel";
-import CartItemModel, { CartItemType } from "../models/CArtItemModel";
+import CartItemModel, { CartItemType } from "../models/CartItemModel";
 import { getCartObj } from "../helpers/cartHelpers";
 
 export const getCartItems = async (req: Request, res: Response) => {
