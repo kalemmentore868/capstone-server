@@ -1,26 +1,22 @@
 version: "3.8"
 services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   api:
     container_name: api
     restart: always
     build: .
     ports:
-      - ${PORT}:${PORT}
+      - 5000:5000
     depends_on:
       - db
     volumes:
       - .:/usr/src/app
-
-  db:
-    container_name: postgres
-    image: postgres
-    ports:
-      - "5433:${DATABASE_PORT}"
-    volumes:
-      - data:/data/db
-    environment:
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-      - POSTGRES_DB=${DATABASE_NAME}
-
-volumes:
-  data: {}

@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../config/db"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
+var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var SellerModel = /** @class */ (function () {
     function SellerModel() {
     }
@@ -49,10 +49,10 @@ var SellerModel = /** @class */ (function () {
             var salt, hashPassword, results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, bcrypt_1.default.genSalt(10)];
+                    case 0: return [4 /*yield*/, bcryptjs_1.default.genSalt(10)];
                     case 1:
                         salt = _a.sent();
-                        return [4 /*yield*/, bcrypt_1.default.hash(seller.password, salt)];
+                        return [4 /*yield*/, bcryptjs_1.default.hash(seller.password, salt)];
                     case 2:
                         hashPassword = _a.sent();
                         return [4 /*yield*/, db_1.default.query("INSERT INTO sellers (address, opening_hours, name, email, password, phone_no) VALUES('".concat(seller.address, "','").concat(seller.opening_hours, "','").concat(seller.name, "', '").concat(seller.email, "','").concat(hashPassword, "', '").concat(seller.phone_no, "') RETURNING *"))];

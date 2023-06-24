@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../config/db"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
+var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var UserModel = /** @class */ (function () {
     function UserModel() {
     }
@@ -49,10 +49,10 @@ var UserModel = /** @class */ (function () {
             var salt, hashPassword, results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, bcrypt_1.default.genSalt(10)];
+                    case 0: return [4 /*yield*/, bcryptjs_1.default.genSalt(10)];
                     case 1:
                         salt = _a.sent();
-                        return [4 /*yield*/, bcrypt_1.default.hash(user.password, salt)];
+                        return [4 /*yield*/, bcryptjs_1.default.hash(user.password, salt)];
                     case 2:
                         hashPassword = _a.sent();
                         return [4 /*yield*/, db_1.default.query("INSERT INTO users (first_name,last_name,email,password, is_admin, phone_number) VALUES('".concat(user.first_name, "','").concat(user.last_name, "','").concat(user.email, "', '").concat(hashPassword, "','").concat(user.is_admin, "', '").concat(user.phone_number, "') RETURNING *"))];

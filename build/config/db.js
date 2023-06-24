@@ -12,7 +12,7 @@ var db = new pg_1.Client({
     port: process.env.DATABASE_PORT,
     user: process.env.DATABASE_USERNAME,
     database: process.env.DATABASE_NAME,
-    // password: process.env.DATABASE_PASSWORD,
+    password: process.env.DATABASE_PASSWORD,
 });
 //this is to ensure that numeric values return as numbers and not text
 pg_1.types.setTypeParser(1700, "text", parseFloat);

@@ -45,7 +45,7 @@ var expressError_1 = require("../helpers/expressError");
 var jsonSchemaHelper_1 = __importDefault(require("../helpers/jsonSchemaHelper"));
 var jsonschema_1 = __importDefault(require("jsonschema"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-var bcrypt_1 = __importDefault(require("bcrypt"));
+var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var userAuth_json_1 = __importDefault(require("../schemas/userAuth.json"));
 var userRegister_json_1 = __importDefault(require("../schemas/userRegister.json"));
 var adminRegister_json_1 = __importDefault(require("../schemas/adminRegister.json"));
@@ -69,7 +69,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                     res.json({ message: "Username or password is incorrect" });
                 }
                 else {
-                    if (!bcrypt_1.default.compareSync(password, user.password)) {
+                    if (!bcryptjs_1.default.compareSync(password, user.password)) {
                         res.json({ message: "Username or password is incorrect" });
                     }
                     else {
@@ -198,7 +198,7 @@ var sellerLogin = function (req, res) { return __awaiter(void 0, void 0, void 0,
                     res.json({ message: "Username or password is incorrect" });
                 }
                 else {
-                    if (!bcrypt_1.default.compareSync(password, seller.password)) {
+                    if (!bcryptjs_1.default.compareSync(password, seller.password)) {
                         res.json({ message: "Username or password is incorrect" });
                     }
                     else {
