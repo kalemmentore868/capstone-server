@@ -4,12 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const db = new Client({
-  host: process.env.DATABASE_HOST,
-  // @ts-ignore
-  port: process.env.DATABASE_PORT,
-  user: process.env.DATABASE_USERNAME,
-  database: process.env.DATABASE_NAME,
-  password: process.env.DATABASE_PASSWORD,
+  connectionString:
+    "postgresql://kalemmentore868:wSVqkEM2zob7@ep-summer-firefly-928803.us-east-2.aws.neon.tech/neondb?sslmode=require",
 });
 
 //this is to ensure that numeric values return as numbers and not text
