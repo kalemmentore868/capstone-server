@@ -10,10 +10,15 @@ export const getOrdersAsString = async (orderId: number) => {
     // @ts-ignore
     const product: ProductType = await ProductModel.getProduct(item.product_id);
     email += `  
-        Item Name: ${product.title}
-        Price: $${product.price}
-        Quantity: ${item.quantity}
-
+<div class="product">
+      <img src='${product.img_url}' alt="Product Image">
+      <div class="product-info">
+        <h4 class="product-title">${product.title}</h4>
+        <p class="product-desc">${product.description}</p>
+        <p class="product-price">Price: $${product.price}</p>
+        <p class="product-quantity">Quantity: ${item.quantity}</p>
+      </div>
+    </div>
         `;
   }
 

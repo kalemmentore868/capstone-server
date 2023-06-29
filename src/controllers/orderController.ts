@@ -111,10 +111,74 @@ export const checkout = async (req: Request, res: Response) => {
 
       let orderedItems = await getOrdersAsString(order.id);
       const subject = `Order made #${order.id}`;
-      const text = `Thank you for your order. Here is the order details: ${orderedItems}
-      notes: ${notes}
-      address: #${address.house_number}, ${address.street}, ${address.city}
-`;
+      const text = `
+
+      <!DOCTYPE html>
+<html>
+<head>
+  <title>Order Confirmation</title>
+  <style>
+    /* Add your custom CSS styles here */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f2f2f2;
+    }
+    .product {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .product img {
+      width: 100px;
+      height: auto;
+      margin-right: 10px;
+    }
+    .product-info {
+      flex-grow: 1;
+    }
+    .product-title {
+      font-weight: bold;
+      margin: 0;
+    }
+    .product-desc {
+      margin: 5px 0;
+    }
+    .product-price {
+      font-weight: bold;
+    }
+    .product-quantity {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+div class="container">
+    <h2>Order Confirmation</h2>
+    <h3>Thank you for your order!</h3>
+     
+      <p>Order made by: ${user.first_name} ${user.last_name}</p>
+      <p>Address: ${address.street} ${address.house_number}, ${address.city}
+      
+      ${orderedItems}
+      
+      <p>Sub Total: ${order.total}</p>
+      <p>Shipping: $${15}</p>
+      <p>Total: ${(order.total + 15).toFixed(2)}</p>
+      
+      <p>Notes: ${notes}</p>
+      <p>Order made at: ${order.created_at}
+
+      </div>
+</body>
+</html>
+      `;
+
       sendEmail(email, subject, text);
       await CartModel.deleteCart(cart.id);
       return res.status(201).json({ message: "Order made" });

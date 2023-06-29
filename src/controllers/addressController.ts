@@ -31,9 +31,6 @@ export const getSingleAddress = async (req: Request, res: Response) => {
 
 export const getAllAddressesByUser = async (req: Request, res: Response) => {
   const id = parseInt(req.params.id);
-  const listOfAddresses: AddressType[] = await AddressModel.getAddressByUser(
-    id
-  );
 
   const fetchedUser = await UserModel.getUser(id);
 
@@ -41,14 +38,14 @@ export const getAllAddressesByUser = async (req: Request, res: Response) => {
     throw new NotFoundError(`User with id: ${id} cannot be found`);
   }
 
-  if (!listOfAddresses || listOfAddresses.length === 0) {
-    throw new NotFoundError(`No addresses found for user with id: ${id}`);
-  } else {
-    res.json({
-      message: `List of all addresses for user with id: ${id}`,
-      data: listOfAddresses,
-    });
-  }
+  const listOfAddresses: AddressType[] = await AddressModel.getAddressByUser(
+    id
+  );
+
+  res.json({
+    message: `List of all addresses for user with id: ${id}`,
+    data: listOfAddresses,
+  });
 };
 
 export const createAddress = async (req: Request, res: Response) => {

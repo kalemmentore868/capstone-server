@@ -6,6 +6,9 @@ dotenv.config();
 const db = new Client({
   connectionString:
     "postgresql://kalemmentore868:wSVqkEM2zob7@ep-summer-firefly-928803.us-east-2.aws.neon.tech/neondb?sslmode=require",
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 //this is to ensure that numeric values return as numbers and not text
