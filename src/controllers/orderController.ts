@@ -158,7 +158,7 @@ export const checkout = async (req: Request, res: Response) => {
   </style>
 </head>
 <body>
-div class="container">
+
     <h2>Order Confirmation</h2>
     <h3>Thank you for your order!</h3>
      
