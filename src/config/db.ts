@@ -4,14 +4,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const db = new Client({
-  host: process.env.RENDER_DATABASE_HOST, // e.g., 'dpg-********-a.oregon-postgres.render.com'
-  //@ts-ignore
-  port: process.env.RENDER_DATABASE_PORT, // e.g., 5432 (or whatever port your database uses)
-  user: process.env.RENDER_DATABASE_USERNAME, // e.g., 'wte_user'
-  password: process.env.RENDER_DATABASE_PASSWORD, // Your database password
-  database: process.env.RENDER_DATABASE_NAME, // e.g., 'wte'
+  connectionString:
+    "postgresql://kalemmentore868:wSVqkEM2zob7@ep-summer-firefly-928803.us-east-2.aws.neon.tech/neondb?sslmode=require",
   ssl: {
-    rejectUnauthorized: false, // Depending on the provider, you might need this to connect via SSL
+    rejectUnauthorized: false,
   },
 });
 
