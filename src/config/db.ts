@@ -1,14 +1,10 @@
-import { Client, types } from "pg";
+import { Client, Pool, types } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const db = new Client({
-  connectionString:
-    "postgresql://kalemmentore868:wSVqkEM2zob7@ep-summer-firefly-928803.us-east-2.aws.neon.tech/neondb?sslmode=require",
-  ssl: {
-    rejectUnauthorized: false,
-  },
+const db = new Pool({
+  connectionString: process.env.POSTGRES_STRING,
 });
 
 //this is to ensure that numeric values return as numbers and not text
