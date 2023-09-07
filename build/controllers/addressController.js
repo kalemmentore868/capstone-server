@@ -87,29 +87,24 @@ var getSingleAddress = function (req, res) { return __awaiter(void 0, void 0, vo
 }); };
 exports.getSingleAddress = getSingleAddress;
 var getAllAddressesByUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, listOfAddresses, fetchedUser;
+    var id, fetchedUser, listOfAddresses;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = parseInt(req.params.id);
-                return [4 /*yield*/, AddressModel_1.default.getAddressByUser(id)];
-            case 1:
-                listOfAddresses = _a.sent();
                 return [4 /*yield*/, UserModel_1.default.getUser(id)];
-            case 2:
+            case 1:
                 fetchedUser = _a.sent();
                 if (!fetchedUser) {
                     throw new expressError_1.NotFoundError("User with id: ".concat(id, " cannot be found"));
                 }
-                if (!listOfAddresses || listOfAddresses.length === 0) {
-                    throw new expressError_1.NotFoundError("No addresses found for user with id: ".concat(id));
-                }
-                else {
-                    res.json({
-                        message: "List of all addresses for user with id: ".concat(id),
-                        data: listOfAddresses,
-                    });
-                }
+                return [4 /*yield*/, AddressModel_1.default.getAddressByUser(id)];
+            case 2:
+                listOfAddresses = _a.sent();
+                res.json({
+                    message: "List of all addresses for user with id: ".concat(id),
+                    data: listOfAddresses,
+                });
                 return [2 /*return*/];
         }
     });

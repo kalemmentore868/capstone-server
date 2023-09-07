@@ -58,7 +58,7 @@ var getOrdersAsString = function (orderId) { return __awaiter(void 0, void 0, vo
                 return [4 /*yield*/, ProductModel_1.default.getProduct(item.product_id)];
             case 3:
                 product = _a.sent();
-                email += "  \n        Item Name: ".concat(product.title, "\n        Price: $").concat(product.price, "\n        Quantity: ").concat(item.quantity, "\n\n        ");
+                email += "  \n<div class=\"product\">\n      <img src='".concat(product.img_url, "' alt=\"Product Image\">\n      <div class=\"product-info\">\n        <h4 class=\"product-title\">").concat(product.title, "</h4>\n        <p class=\"product-desc\">").concat(product.description, "</p>\n        <p class=\"product-price\">Price: $").concat(product.price, "</p>\n        <p class=\"product-quantity\">Quantity: ").concat(item.quantity, "</p>\n      </div>\n    </div>\n        ");
                 _a.label = 4;
             case 4:
                 i++;
